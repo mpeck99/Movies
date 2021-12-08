@@ -17,7 +17,7 @@ module.exports = {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-      { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' }
+      { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Fresca&family=Londrina+Solid:wght@100;300;400&display=swap' }
     ]
   },
 
@@ -29,9 +29,7 @@ module.exports = {
   /*
   ** Global CSS
   */
-  css: [
-    'vuetify/src/stylus/main.styl'
-  ],
+  css: ['vuetify/src/stylus/main.styl'],
 
   /*
   ** Plugins to load before mounting the App
