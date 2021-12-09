@@ -25,6 +25,8 @@
 <script>
 import Logo from '~/components/Logo.vue'
 import VuetifyLogo from '~/components/VuetifyLogo.vue'
+import '@mdi/font/css/materialdesignicons.css'
+
 
 export default {
   components: {
