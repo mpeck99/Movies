@@ -27,36 +27,167 @@ import Logo from '~/components/Logo.vue'
 import VuetifyLogo from '~/components/VuetifyLogo.vue'
 import '@mdi/font/css/materialdesignicons.css'
 
+const axios = require('axios')
+const url = 'https://sheets.googleapis.com/v4/spreadsheets/1nXRZYrOnedMOvioQJxbIQKTpc9_XCGI23-KMk8jwZQU/values/Movies!A:D?key=AIzaSyDrWhgTrY_NIQ7pa19SpdYtF0Wcom3stDA'
 
 export default {
   components: {
     Logo,
     VuetifyLogo
-  }
+  },
+
+  data() {
+    return {
+      movies: []
+    }
+  },
+
+  async created(){
+    const res = await axios.get(url)
+    const rows = res.data.values
+    // const movies = []
+
+    const searchAPI = 'https://api.themoviedb.org/3/search/movie?api_key=e444034c3d7ef62e63059e6e8ac5b828&query='
+
+    for(const i in rows) {
+      
+      const movieSearch = await axios.get(searchAPI+rows[i][0]+'&primary_release_year='+rows[i][1]+'&page=1');
+
+      this.movies.push({
+        id: movieSearch.data.results[0].id,
+        title: movieSearch.data.results[0].title,
+        year: movieSearch.data.results[0].release_date,
+        overview: movieSearch.data.results[0].overview,
+        poster: 'https://image.tmdb.org/t/p/original/'+movieSearch.data.results[0].poster_path,
+        backdrop: 'https://image.tmdb.org/t/p/original/'+movieSearch.data.results[0].backdrop_path
+      });
+    }
+    return this.movies
+  }, 
 }
 </script>
 
 <style>
 :root {
   /* Colors */
-  --black: #333;
-  --pink: #f45866;
-  --blue: #17bebb;
-  --purple: #a882dd;
-  --white: #fff;
+  --black : #141414;
+  --tealD: #061C23;
+  --teal: #0e4758;
+  --purple: #A167A5;
+  --white: #fffcff;
+  --maroon: #603140;
   /* Fonts */
   --heading: 'Londrina Solid', cursive;
   --body: 'Fresca', sans-serif;
 }
 
 html, body {
-  color: var(--black);
+  padding: 1rem;
+
+  position: relative;
+
+  color: var(--white);
   font-family: var(--body);
+  font-size: 16px;
 
   box-sizing: border-box;
+  background: linear-gradient(to left, var(--tealD), var(--teal), var(--teal), var(--tealD) );
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--heading);
+}
+
+h1 {
+  font-size: 3rem;
+  font-weight: 500;
+
+}
+
+.header {
+  width: 100%;
+  height: 5rem;
+
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  padding: 1rem;
+
+  background: var(--tealD);
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  z-index: 1;
+}
+
+.movie-wrapper {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-wrap: wrap;
+
+  padding: 0;
+  margin-top: 4.5rem;
+}
+.movie {
+  width: 15.75rem;
+  height: 23.75rem;
+
+  margin: 0.5rem;
+
+  background-size: 100% 100%;
+  background-position: center;
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, .2);
+
+  animation: slideIn 2s forwards ease-in;
+}
+
+.movie .content {
+  display: none;
+}
+
+.search-form {
+  display: flex;
+  margin-left: auto;
+}
+
+.btn-search {
+  width: 3rem;
+  height: 3rem;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background: var(--teal);
+  border-radius: 50%;
+}
+
+.v-icon{
+  font-size: 2.5rem;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  border: 0;
+}
+
+@keyframes slideIn {
+  0% {
+    transform: translateX(-50rem);
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 </style>
