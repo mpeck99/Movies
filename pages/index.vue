@@ -15,7 +15,13 @@
       <div class="movie" v-for="movie in movies" :style="{ backgroundImage: 'url(' + movie.poster + ')' }" :key="movie.id" :id="movie.id">
         <div class="content">
           <h2>{{movie.title}}</h2>
-          <p>{{movie.overview}}</p>
+          <time>{{movie.year}}</time>
+          <p v-if="movie.overview.length > 200">{{movie.overview.substring(0,200)}} <a :href="`https://www.themoviedb.org/movie/${movie.id}-${movie.title}`" target="_blank" class="read-more" aria-label="Read more about'+movieSearch.data.results[0].title+'">...read more</a></p>
+          <p v-else>{{movie.overview}}</p>
+          <p class="rating">
+            {{movie.rating}}<span>%</span>
+          </p>
+          <a :href="`https://www.youtube.com/watch?v=${movie.videoKey}`" v-if="movie.videoKey" :title="`${movie.title} Trailer`" target="_blank">View {{movie.title}} trailer</a>
         </div>
       </div>
     </div>
@@ -38,7 +44,8 @@ export default {
 
   data() {
     return {
-      movies: []
+      movies: [],
+      key: ''
     }
   },
 
@@ -48,19 +55,34 @@ export default {
     // const movies = []
 
     const searchAPI = 'https://api.themoviedb.org/3/search/movie?api_key=e444034c3d7ef62e63059e6e8ac5b828&query='
-
+    
     for(const i in rows) {
       
       const movieSearch = await axios.get(searchAPI+rows[i][0]+'&primary_release_year='+rows[i][1]+'&page=1');
-
+      const date = new Date(movieSearch.data.results[0].release_date)
+      const videoKey = await axios.get('https://api.themoviedb.org/3/movie/'+movieSearch.data.results[0].id+'/videos?api_key=e444034c3d7ef62e63059e6e8ac5b828')
+      // const key = ''
+      for(const x in videoKey){
+        console.log(videoKey[x])
+        for(const y in videoKey[x].results){
+          if(videoKey[x].results[y].type && videoKey[x].results[y].type === 'Trailer'){
+            console.log(videoKey[x].results[y])
+            this.key = videoKey[x].results[y].key;
+          }
+        }
+      }
+  
+      const options = {year: 'numeric', month: 'short', day: 'numeric' }
       this.movies.push({
         id: movieSearch.data.results[0].id,
         title: movieSearch.data.results[0].title,
-        year: movieSearch.data.results[0].release_date,
+        year: date.toLocaleDateString('en-US', options),
         overview: movieSearch.data.results[0].overview,
         poster: 'https://image.tmdb.org/t/p/original/'+movieSearch.data.results[0].poster_path,
-        backdrop: 'https://image.tmdb.org/t/p/original/'+movieSearch.data.results[0].backdrop_path
-      });
+        backdrop: 'https://image.tmdb.org/t/p/original/'+movieSearch.data.results[0].backdrop_path,
+        rating: Math.round(movieSearch.data.results[0].vote_average *10),
+        videoKey: this.key
+      });    
     }
     return this.movies
   }, 
@@ -72,7 +94,7 @@ export default {
   /* Colors */
   --black : #141414;
   --tealD: #061C23;
-  --teal: #0e4758;
+  --teal: #065a60;
   --purple: #A167A5;
   --white: #fffcff;
   --maroon: #603140;
@@ -92,6 +114,8 @@ html, body {
 
   box-sizing: border-box;
   background: linear-gradient(to left, var(--tealD), var(--teal), var(--teal), var(--tealD) );
+
+  line-height: 1.5;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -102,6 +126,24 @@ h1 {
   font-size: 3rem;
   font-weight: 500;
 
+}
+
+h2 {
+  font-size: 1.5rem;
+}
+
+time {
+  font-family: var(--heading);
+  font-size: 1rem;
+}
+
+a {
+  color: var(--white);
+  font-weight: 700;
+}
+
+a:hover, a:focus {
+  color: var(--black);
 }
 
 .header {
@@ -132,8 +174,8 @@ h1 {
   margin-top: 4.5rem;
 }
 .movie {
-  width: 15.75rem;
-  height: 23.75rem;
+  width: 16rem;
+  height: 25.5rem;
 
   margin: 0.5rem;
 
@@ -142,10 +184,22 @@ h1 {
   box-shadow: 4px 4px 8px rgba(0, 0, 0, .2);
 
   animation: slideIn 2s forwards ease-in;
+  transform: scale(1.1);
+}
+
+.movie:hover .content{
+  display: block;
 }
 
 .movie .content {
+  height: 100%;
+  
   display: none;
+  position: relative;
+
+  padding: 1rem;
+
+  background: rgba(161, 103, 165, 0.9)
 }
 
 .search-form {
@@ -180,12 +234,37 @@ h1 {
   border: 0;
 }
 
+.rating {
+  width: 3rem;
+  height: 3rem;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  position: absolute;
+  bottom: 0;
+  left: 1rem;
+
+  background: var(--teal);
+  border-radius: 50%;
+
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.rating span {
+  font-size: 1rem;
+}
+
 @keyframes slideIn {
   0% {
+    transition: all;
     transform: translateX(-50rem);
     opacity: 0;
   }
   100% {
+    transition: all;
     opacity: 1;
     transform: translateX(0);
   }
