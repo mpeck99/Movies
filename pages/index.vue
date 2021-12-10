@@ -93,7 +93,7 @@ export default {
       const searchAPI =
         "https://api.themoviedb.org/3/search/movie?api_key=e444034c3d7ef62e63059e6e8ac5b828&query=";
     
-      this.randomNumber = Math.floor(Math.random()*rows.length/5)+1
+      this.randomNumber = Math.floor(Math.random()*rows.length/ 15)+1
       
       for (const i in rows) {
         const movieSearch = await axios.get(
@@ -268,7 +268,7 @@ a:focus {
 
   position: absolute;
 
-  background: linear-gradient(30deg, rgba(65, 211, 189, 0.8), rgba(247, 231, 51, 0.8),  rgba(255,107, 107, 0.8),rgba(6, 90, 96, 0.9));
+  background: linear-gradient(30deg, rgba(255,107, 107, 0.8),rgba(6, 90, 96, 0.9));
   filter: contrast(-2%);
   z-index: 1;
 }
