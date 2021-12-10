@@ -62,17 +62,18 @@
 </template>
 
 <script>
-import Logo from '~/components/Logo.vue'
-import VuetifyLogo from '~/components/VuetifyLogo.vue'
-import '@mdi/font/css/materialdesignicons.css'
-
-const axios = require('axios')
-const url = 'https://sheets.googleapis.com/v4/spreadsheets/1nXRZYrOnedMOvioQJxbIQKTpc9_XCGI23-KMk8jwZQU/values/Movies!A:D?key=AIzaSyDrWhgTrY_NIQ7pa19SpdYtF0Wcom3stDA'
+import Logo from "~/components/Logo.vue";
+import VuetifyLogo from "~/components/VuetifyLogo.vue";
+import "@mdi/font/css/materialdesignicons.css";
+const apiKey = process.env.API_Key
+const axios = require("axios");
+const url =
+  "https://sheets.googleapis.com/v4/spreadsheets/1nXRZYrOnedMOvioQJxbIQKTpc9_XCGI23-KMk8jwZQU/values/Movies!A:D?key=AIzaSyDrWhgTrY_NIQ7pa19SpdYtF0Wcom3stDA";
 
 export default {
   components: {
     Logo,
-    VuetifyLogo
+    VuetifyLogo,
   },
 
   data() {
@@ -108,6 +109,7 @@ export default {
             movieSearch.data.results[0].id +
             "/videos?api_key=e444034c3d7ef62e63059e6e8ac5b828&language=en-US"
         );
+
         for (const x in videoKey) {
           if (videoKey[x].results != undefined) {
             if (videoKey[x].results.length > 0) {
@@ -119,40 +121,57 @@ export default {
                   this.key = videoKey[x].results[y].key;
                 }
               }
-      }
-  
-      const options = {year: 'numeric', month: 'short', day: 'numeric' }
-      this.movies.push({
-        id: movieSearch.data.results[0].id,
-        title: movieSearch.data.results[0].title,
-        year: date.toLocaleDateString('en-US', options),
-        overview: movieSearch.data.results[0].overview,
-        poster: 'https://image.tmdb.org/t/p/original/'+movieSearch.data.results[0].poster_path,
-        backdrop: 'https://image.tmdb.org/t/p/original/'+movieSearch.data.results[0].backdrop_path,
-        rating: Math.round(movieSearch.data.results[0].vote_average *10),
-        videoKey: this.key
-      });    
+            } else {
+              this.key = "";
+            }
+          }
+        }
+
+        const options = { year: "numeric", month: "short", day: "numeric" };
+        setTimeout(() => {
+        this.movies.push({
+          id: movieSearch.data.results[0].id,
+          title: movieSearch.data.results[0].title,
+          year: date.toLocaleDateString("en-US", options),
+          overview: movieSearch.data.results[0].overview,
+          poster:
+            "https://image.tmdb.org/t/p/original/" +
+            movieSearch.data.results[0].poster_path,
+          backdrop:
+            "https://image.tmdb.org/t/p/original/" +
+            movieSearch.data.results[0].backdrop_path,
+          rating: Math.round(movieSearch.data.results[0].vote_average * 10),
+          videoKey: this.key,
+        });
+      }, 100);
+        
+      }  
     }
-    return this.movies
-  }, 
-}
+    catch(err){
+      console.log(err);
+    }
+  },
+};
 </script>
 
 <style>
 :root {
   /* Colors */
-  --black : #141414;
-  --tealD: #061C23;
+  --black: #141414;
+  --tealD: #061c23;
   --teal: #065a60;
-  --purple: #A167A5;
+  --pink: #ff6b6b;
+  --turquoise: #41d3bd;
+  --yellow: #f7e733;
   --white: #fffcff;
   --maroon: #603140;
   /* Fonts */
-  --heading: 'Londrina Solid', cursive;
-  --body: 'Fresca', sans-serif;
+  --heading: "Staatliches", cursive;
+  --body: "Raleway", sans-serif;
 }
 
-html, body {
+html,
+body {
   padding: 1rem;
 
   position: relative;
@@ -162,23 +181,33 @@ html, body {
   font-size: 16px;
 
   box-sizing: border-box;
-  background: linear-gradient(to left, var(--tealD), var(--teal), var(--teal), var(--tealD) );
+  background: linear-gradient(
+    to left,
+    var(--tealD),
+    var(--teal),
+    var(--teal),
+    var(--tealD)
+  );
 
   line-height: 1.5;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--heading);
 }
 
 h1 {
   font-size: 3rem;
   font-weight: 500;
-
 }
 
 h2 {
-  font-size: 1.5rem;
+  font-size: 1.6rem;
 }
 
 time {
@@ -191,8 +220,9 @@ a {
   font-weight: 700;
 }
 
-a:hover, a:focus {
-  color: var(--black);
+a:hover,
+a:focus {
+  color: var(--pink);
 }
 
 .header {
@@ -206,22 +236,60 @@ a:hover, a:focus {
   top: 0;
   left: 0;
 
-  padding: 1rem;
+  padding: 1rem 2.5rem;
 
   background: var(--tealD);
+  border-bottom: 2px solid var(--pink);
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  z-index: 10;
+}
+
+.banner {
+  height: calc(100vh - 3rem);
+  width: 100vw;
+
+  margin-top: 3rem;
+  margin-left: -2rem;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  position: relative;
+
+  background-size: cover;
+
+}
+
+.banner:before {
+  content: '';
+  height: 100%;
+  width: 100%;
+
+  position: absolute;
+
+  background: linear-gradient(30deg, rgba(65, 211, 189, 0.8), rgba(247, 231, 51, 0.8),  rgba(255,107, 107, 0.8),rgba(6, 90, 96, 0.9));
+  filter: contrast(-2%);
   z-index: 1;
+}
+
+.banner h2 {
+  font-size: 5rem;
+  z-index: 2;
+
+  filter:blur(0)
 }
 
 .movie-wrapper {
   display: flex;
-  justify-content: flex-start;
-  align-items: flex-start;
+  justify-content: center;
+  align-items: center;
   flex-wrap: wrap;
 
   padding: 0;
-  margin-top: 4.5rem;
+  margin-top: 2rem;
 }
+
 .movie {
   width: 16rem;
   height: 25.5rem;
@@ -230,25 +298,25 @@ a:hover, a:focus {
 
   background-size: 100% 100%;
   background-position: center;
-  box-shadow: 4px 4px 8px rgba(0, 0, 0, .2);
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2);
 
   animation: slideIn 2s forwards ease-in;
   transform: scale(1.1);
 }
 
-.movie:hover .content{
+.movie:hover .content {
   display: block;
 }
 
 .movie .content {
   height: 100%;
-  
+
   display: none;
   position: relative;
 
   padding: 1rem;
 
-  background: rgba(161, 103, 165, 0.9)
+  background: rgba(55,55,55, 0.7);
 }
 
 .search-form {
@@ -268,7 +336,7 @@ a:hover, a:focus {
   border-radius: 50%;
 }
 
-.v-icon{
+.v-icon {
   font-size: 2.5rem;
 }
 
@@ -279,31 +347,79 @@ a:hover, a:focus {
   padding: 0;
   margin: -1px;
   overflow: hidden;
-  clip: rect(0,0,0,0);
+  clip: rect(0, 0, 0, 0);
   border: 0;
 }
 
+.info {
+  width: 100%;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+
+  padding: 0.5rem;
+
+  position: absolute;
+  bottom: 0.25rem;
+  left: 0;
+
+  list-style: none;
+}
+
+.info li a {
+  display: flex;
+  text-decoration: none;
+
+}
+
 .rating {
-  width: 3rem;
-  height: 3rem;
+  width: 2.5rem;
+  height: 2.5rem;
 
   display: flex;
   justify-content: center;
   align-items: center;
 
-  position: absolute;
-  bottom: 0;
-  left: 1rem;
-
-  background: var(--teal);
   border-radius: 50%;
+  background: var(--tealD);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
 
   font-size: 1.5rem;
   font-weight: 700;
 }
 
-.rating span {
-  font-size: 1rem;
+.v-progress-circular__info {
+  font-size: 0.75rem;
+  color: var(--white);
+}
+
+.trailer {
+  width: 2.5rem;
+  height: 2.4rem;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background-color: var(--turquoise);
+  border-radius: 50%;
+  border: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+}
+
+.trailer:hover .mdi-play {
+  color: var(--turquoise) !important;
+}
+
+.trailer:hover, .trailer:focus {
+  background-color: var(--tealD);
+  border: 0.1rem solid var(--pink);
+}
+
+.mdi-play {
+  font-size: 1.9rem;
+  color: var(--tealD) !important;
 }
 
 @keyframes slideIn {
@@ -312,6 +428,7 @@ a:hover, a:focus {
     transform: translateX(-50rem);
     opacity: 0;
   }
+
   100% {
     transition: all;
     opacity: 1;
