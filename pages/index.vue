@@ -15,16 +15,46 @@
       <h2>{{this.movies[this.randomNumber].title}}</h2>
     </div>
     <div class="movie-wrapper" v-if="movies.length > 0">
-      <div class="movie" v-for="movie in movies" :style="{ backgroundImage: 'url(' + movie.poster + ')' }" :key="movie.id" :id="movie.id">
+      <div
+        class="movie"
+        v-for="movie in movies"
+        :style="{ backgroundImage: 'url(' + movie.poster + ')' }"
+        :key="movie.id"
+        :id="movie.id"
+      >
         <div class="content">
-          <h2>{{movie.title}}</h2>
-          <time>{{movie.year}}</time>
-          <p v-if="movie.overview.length > 200">{{movie.overview.substring(0,200)}} <a :href="`https://www.themoviedb.org/movie/${movie.id}-${movie.title}`" target="_blank" class="read-more" aria-label="Read more about'+movieSearch.data.results[0].title+'">...read more</a></p>
-          <p v-else>{{movie.overview}}</p>
-          <p class="rating">
-            {{movie.rating}}<span>%</span>
+          <h2>{{ movie.title }}</h2>
+
+          <time>{{ movie.year }}</time>
+          <p v-if="movie.overview.length > 200">
+            {{ movie.overview.substring(0, 200) }}
+            <a
+              :href="`https://www.themoviedb.org/movie/${movie.id}-${movie.title}`"
+              target="_blank"
+              class="read-more"
+              aria-label="Read more about'+movieSearch.data.results[0].title+'"
+              >...read more</a
+            >
           </p>
-          <a :href="`https://www.youtube.com/watch?v=${movie.videoKey}`" v-if="movie.videoKey" :title="`${movie.title} Trailer`" target="_blank">View {{movie.title}} trailer</a>
+          <p v-else>{{ movie.overview }}</p>
+          <ul class="info">
+            <li class="trailer" v-if="movie.videoKey">
+              <a
+              :href="`https://www.youtube.com/watch?v=${movie.videoKey}`"
+              v-if="movie.videoKey"
+              :title="`${movie.title} Trailer`"
+              target="_blank"
+              ><v-icon>mdi-play</v-icon><span class="sr-only">Watch {{movie.title}} trailer</span></a
+            >
+            </li>
+            <li><a :href="`https://www.themoviedb.org/movie/${movie.id}-${movie.title}`"
+              target="_blank"
+              class="read-more"
+              aria-label="Read more about'+movieSearch.data.results[0].title+'">Learn more <span class="sr-only">about {{movie.title}}</span></a></li>
+            <li class="rating">
+              <v-progress-circular :value="movie.rating" :width="3" :size="42" :rotate="280" color="#41d3bd">{{movie.rating}}%</v-progress-circular>
+            </li>
+          </ul>
         </div>
       </div>
     </div>
