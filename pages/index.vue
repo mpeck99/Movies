@@ -274,6 +274,8 @@ a:focus {
   width: 100%;
 
   position: absolute;
+  top: 0;
+  left: 0;
 
   background: linear-gradient(30deg, rgba(255,107, 107, 0.8),rgba(6, 90, 96, 0.9));
   filter: contrast(-2%);
@@ -281,7 +283,9 @@ a:focus {
 }
 
 .banner h2 {
-  font-size: 5rem;
+  font-size: 4rem;
+  font-family: var(--body);
+  font-weight: 400;
   z-index: 2;
 
   filter:blur(0)
