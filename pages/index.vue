@@ -89,20 +89,17 @@ export default {
 
     const searchAPI = 'https://api.themoviedb.org/3/search/movie?api_key=e444034c3d7ef62e63059e6e8ac5b828&query='
     
-    for(const i in rows) {
-      
-      const movieSearch = await axios.get(searchAPI+rows[i][0]+'&primary_release_year='+rows[i][1]+'&page=1');
-      const date = new Date(movieSearch.data.results[0].release_date)
-      const videoKey = await axios.get('https://api.themoviedb.org/3/movie/'+movieSearch.data.results[0].id+'/videos?api_key=e444034c3d7ef62e63059e6e8ac5b828')
-      // const key = ''
-      for(const x in videoKey){
-        console.log(videoKey[x])
-        for(const y in videoKey[x].results){
-          if(videoKey[x].results[y].type && videoKey[x].results[y].type === 'Trailer'){
-            console.log(videoKey[x].results[y])
-            this.key = videoKey[x].results[y].key;
-          }
-        }
+        for (const x in videoKey) {
+          if (videoKey[x].results != undefined) {
+            if (videoKey[x].results.length > 0) {
+              for (const y in videoKey[x].results) {
+                if (
+                  videoKey[x].results[y].type &&
+                  videoKey[x].results[y].type === "Trailer"
+                ) {
+                  this.key = videoKey[x].results[y].key;
+                }
+              }
       }
   
       const options = {year: 'numeric', month: 'short', day: 'numeric' }
