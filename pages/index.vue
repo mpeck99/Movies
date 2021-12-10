@@ -2,14 +2,17 @@
   <div class="wrapper">
     <div class="header">
       <v-icon color="#fffcff">mdi-filmstrip</v-icon>
-      <h1>Movies</h1>
+      <h1>Peck movies</h1>
       <div class="search-form">
         <label for="search" class="sr-only">Search</label>
-        <input type="text" name="search" id="search">
+        <input type="text" name="search" id="search" />
         <button class="btn-search">
-          <v-icon xlarge color="#fffcff">mdi-magnify</v-icon>
+          <v-icon xLarge color="#fffcff">mdi-magnify</v-icon>
         </button>
       </div>
+    </div>
+    <div class="banner" v-if="this.movies[this.randomNumber]" :style="{backgroundImage: 'url('+this.movies[this.randomNumber].backdrop+')'}">
+      <h2>{{this.movies[this.randomNumber].title}}</h2>
     </div>
     <div class="movie-wrapper" v-if="movies.length > 0">
       <div class="movie" v-for="movie in movies" :style="{ backgroundImage: 'url(' + movie.poster + ')' }" :key="movie.id" :id="movie.id">
