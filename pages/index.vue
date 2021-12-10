@@ -77,16 +77,23 @@ export default {
 
   data() {
     return {
+      personalMovies: [],
       movies: [],
-      key: ''
-    }
+      key: "",
+      apiKey: process.env.API_Key,
+      randomMovie: [],
+      randomNumber: 0
+    };
   },
-
-  async created(){
-    const res = await axios.get(url)
-    const rows = res.data.values
-    // const movies = []
-
+  async beforeMount() {
+    try{
+      const res =  await axios.get(url);
+      const rows = res.data.values;
+      const searchAPI =
+        "https://api.themoviedb.org/3/search/movie?api_key=e444034c3d7ef62e63059e6e8ac5b828&query=";
+    
+      this.randomNumber = Math.floor(Math.random()*rows.length/5)+1
+      
       for (const i in rows) {
         const movieSearch = await axios.get(
           searchAPI +
