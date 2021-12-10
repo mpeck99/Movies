@@ -87,8 +87,20 @@ export default {
     const rows = res.data.values
     // const movies = []
 
-    const searchAPI = 'https://api.themoviedb.org/3/search/movie?api_key=e444034c3d7ef62e63059e6e8ac5b828&query='
-    
+      for (const i in rows) {
+        const movieSearch = await axios.get(
+          searchAPI +
+            rows[i][0] +
+            "&primary_release_year=" +
+            rows[i][1] +
+            "&page=1&language=en-US"
+        );
+        const date = new Date(movieSearch.data.results[0].release_date);
+        const videoKey = await axios.get(
+          "https://api.themoviedb.org/3/movie/" +
+            movieSearch.data.results[0].id +
+            "/videos?api_key=e444034c3d7ef62e63059e6e8ac5b828&language=en-US"
+        );
         for (const x in videoKey) {
           if (videoKey[x].results != undefined) {
             if (videoKey[x].results.length > 0) {
