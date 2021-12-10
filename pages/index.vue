@@ -95,6 +95,13 @@ export default {
     
       this.randomNumber = Math.floor(Math.random()*rows.length/ 15)+1
       
+      setTimeout(() => {
+        setInterval(() => {
+        this.randomNumber = Math.floor(Math.random()*rows.length)+1
+      }, 9000);
+      }, 9000);
+      
+
       for (const i in rows) {
         const movieSearch = await axios.get(
           searchAPI +
