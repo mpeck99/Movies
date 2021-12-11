@@ -340,8 +340,10 @@ a:focus {
   top: 0;
   left: 0;
 
-  background: linear-gradient(30deg, rgba(255,107, 107, 0.8),rgba(6, 90, 96, 0.9));
-  filter: contrast(-2%);
+  background: rgba(0, 0, 0, 0.8);
+
+  /* background: linear-gradient(30deg, rgba(255,107, 107, 0.9),rgba(6, 90, 96, 0.9)); */
+
   z-index: 1;
 }
 
