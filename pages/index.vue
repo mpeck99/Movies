@@ -162,6 +162,35 @@ export default {
       console.log(err);
     }
   },
+
+
+
+  mounted() {   
+    window.addEventListener('scroll', this.throttle(this.parallax, 14));
+  },
+
+  methods: {
+    parallax() {
+      var scrolled = window.pageYOffset;
+      var banner= document.querySelector(".banner .inner");
+  
+      var coords = (scrolled * 0.50) + 'px'
+      if(banner){
+       banner.style.transform = 'translateY(-' + coords + ')'; 
+      }
+      
+    },
+
+    throttle(fn, wait) {
+      var time = Date.now();
+      return function() {
+        if ((time + wait - Date.now()) < 0) {
+          fn();
+          time = Date.now();
+        }
+      }
+    } 
+  }
 };
 </script>
 
