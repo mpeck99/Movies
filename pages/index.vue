@@ -92,22 +92,20 @@ export default {
       randomNumber: 0
     };
   },
-  async beforeMount() {
+  async created() {
     try{
       const res =  await axios.get(url);
       const rows = res.data.values;
       const searchAPI =
         "https://api.themoviedb.org/3/search/movie?api_key=e444034c3d7ef62e63059e6e8ac5b828&query=";
     
-      this.randomNumber = Math.floor(Math.random()*rows.length/ 15)+1
-      
+      this.randomNumber = Math.floor(Math.random()*rows.length/ 40)+1
       setTimeout(() => {
         setInterval(() => {
         this.randomNumber = Math.floor(Math.random()*rows.length)+1
-      }, 9000);
-      }, 9000);
+      }, 15000);
+      }, 15000);
       
-
       for (const i in rows) {
         const movieSearch = await axios.get(
           searchAPI +
