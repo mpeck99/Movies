@@ -153,10 +153,40 @@ export default {
             movieSearch.data.results[0].backdrop_path,
           rating: Math.round(movieSearch.data.results[0].vote_average * 10),
           videoKey: this.key,
+          tagline: ''
         });
       }, 100);
-        
+      const taglineAPI = await axios.get(
+          "https://api.themoviedb.org/3/movie/" +
+            movieSearch.data.results[0].id +
+            "?api_key=e444034c3d7ef62e63059e6e8ac5b828&language=en-US"
+        );
+        const tagline = JSON.parse(JSON.stringify(taglineAPI));
+        for(const t in tagline){
+          if(tagline[t] != undefined && tagline[t].tagline){
+            this.tagline.push(
+              {
+                id: tagline[t].id,
+                tagline: tagline[t].tagline
+              }
+            )
+          }
+       }
+       
+       for(const m in this.movies){
+         for(const t in this.tagline){
+           if(this.movies[m].id === this.tagline[t].id){
+             this.movies[m].tagline = this.tagline[t].tagline
+           }
       }  
+           }
+         } 
+    }
+         } 
+       }
+      }  
+
+      
     }
     catch(err){
       console.log(err);
