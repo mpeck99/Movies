@@ -411,10 +411,17 @@ a:focus {
 
 .movie:hover .content {
   display: block;
+  
+  animation: heightGrow 1s ease-in-out forwards;
+
+  position: absolute;
+  bottom: 0;
+
+  overflow: hidden;
 }
 
 .movie .content {
-  height: 100%;
+  height: 0%;
 
   display: none;
   position: relative;
@@ -538,6 +545,20 @@ a:focus {
     transition: all;
     opacity: 1;
     transform: translateX(0);
+  }
+}
+
+@keyframes heightGrow{
+  0% {
+    height: 0;
+
+    opacity: 0;
+  }
+
+  100% {
+    height: 100%;
+
+    opacity: 100%;
   }
 }
 </style>
