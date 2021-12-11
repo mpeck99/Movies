@@ -11,9 +11,15 @@
         </button>
       </div>
     </div>
+
     <div class="banner" v-if="this.movies[this.randomNumber]" :style="{backgroundImage: 'url('+this.movies[this.randomNumber].backdrop+')'}">
-      <h2>{{this.movies[this.randomNumber].title}}</h2>
+      <div class="inner">
+        <p v-if="this.movies[this.randomNumber].tagline">"{{this.movies[this.randomNumber].tagline}}"</p>
+        <h2 class="">{{this.movies[this.randomNumber].title}}</h2>
+      </div>
     </div>
+    <div class="banner" v-else :style="{       backgroundImage: 'url('+{backgroundImagePath}+')'}">
+    </div>  
     <div class="movie-wrapper" v-if="movies.length > 0">
       <div
         class="movie"
