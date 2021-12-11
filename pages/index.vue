@@ -347,13 +347,42 @@ a:focus {
   z-index: 1;
 }
 
-.banner h2 {
-  font-size: 4rem;
-  font-family: var(--body);
-  font-weight: 400;
+.banner .inner{
+  height: 100%;
+  width: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
   z-index: 2;
 
-  filter:blur(0)
+  scroll-behavior: smooth;
+}
+
+.banner .inner h2 {
+  position: absolute;
+  right: 3rem;
+  bottom: 3rem;
+
+  font-size: 3rem;
+  font-family: var(--heading);
+  font-weight: 400;
+
+  filter:blur(0);
+
+  transition: all 2s ease-in-out 3s;
+}
+
+.banner .inner p {
+  max-width: 80vw;
+
+  font-size: 2rem;
+  font-family: var(--body);
+  font-style: italic;
+  text-align: center;
+
+  transition: all 1s ease-in-out 3s;
 }
 
 .movie-wrapper {
