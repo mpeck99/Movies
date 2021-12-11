@@ -20,6 +20,7 @@
     </div>
     <div class="banner" v-else :style="{       backgroundImage: 'url('+{backgroundImagePath}+')'}">
     </div>  
+    
     <div class="movie-wrapper" v-if="movies.length > 0">
       <div
         class="movie"
@@ -71,6 +72,7 @@
 import Logo from "~/components/Logo.vue";
 import VuetifyLogo from "~/components/VuetifyLogo.vue";
 import "@mdi/font/css/materialdesignicons.css";
+import backgroundImagePath from '~/assets/images/default-backdrop.jpeg'
 const apiKey = process.env.API_Key
 const axios = require("axios");
 const url =
@@ -89,7 +91,9 @@ export default {
       key: "",
       apiKey: process.env.API_Key,
       randomMovie: [],
-      randomNumber: 0
+      randomNumber: 0,
+      backgroundImagePath, 
+      tagline: []
     };
   },
   async created() {
@@ -178,10 +182,6 @@ export default {
            if(this.movies[m].id === this.tagline[t].id){
              this.movies[m].tagline = this.tagline[t].tagline
            }
-      }  
-           }
-         } 
-    }
          } 
        }
       }  
@@ -328,7 +328,9 @@ a:focus {
   position: relative;
 
   background-size: cover;
-
+  background-position: center;
+  animation: fadeIn 2s linear forwards ;
+  transition: background-image 1s ease-in-out;
 }
 
 .banner:before {
@@ -401,6 +403,8 @@ a:focus {
 
   margin: 0.5rem;
 
+  position: relative;
+
   background-size: 100% 100%;
   background-position: center;
   box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2);
@@ -428,7 +432,7 @@ a:focus {
 
   padding: 1rem;
 
-  background: rgba(55,55,55, 0.7);
+  background: rgba(0,0,0, 0.9);
 }
 
 .search-form {
@@ -482,7 +486,6 @@ a:focus {
 .info li a {
   display: flex;
   text-decoration: none;
-
 }
 
 .rating {
@@ -495,7 +498,7 @@ a:focus {
 
   border-radius: 50%;
   background: var(--tealD);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+  box-shadow: 2px 2px 10px rgba(255, 255, 255, 0.3);
 
   font-size: 1.5rem;
   font-weight: 700;
@@ -517,7 +520,7 @@ a:focus {
   background-color: var(--turquoise);
   border-radius: 50%;
   border: none;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+  box-shadow: 2px 2px 10px rgba(255, 255, 255, 0.3);
 }
 
 .trailer:hover .mdi-play {
