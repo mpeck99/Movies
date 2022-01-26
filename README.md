@@ -3,8 +3,6 @@
 This is a personal movie website that will display all movies I own
 
 
-> Movie website
-
 ## Build Setup
 
 ``` bash
@@ -23,4 +21,4 @@ $ npm run generate
 ```
 
 For detailed explanation on how things work, checkout [Nuxt.js docs](https://nuxtjs.org).
->>>>>>> master
+
