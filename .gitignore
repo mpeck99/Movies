@@ -8,7 +8,12 @@ npm-debug.log
 .nuxt
 
 # Nuxt generate
-dist
+nuxt.config.js
+package.json
+package-lock.json
+static
+store
+
 
 # IDE
 .idea
